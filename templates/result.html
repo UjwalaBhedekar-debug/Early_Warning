@@ -1,0 +1,512 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="result-container">
+
+    <!-- Page Heading -->
+
+    <div class="result-heading">
+
+        <h1>
+            Student Analysis
+        </h1>
+
+        <p>
+            Early warning assessment based on the student's
+            academic performance.
+        </p>
+
+    </div>
+
+
+    <!-- Risk Summary -->
+
+    <div class="risk-summary">
+
+        <div class="risk-circle
+            {% if student['risk_level'] == 'Low' %}
+                result-low
+            {% elif student['risk_level'] == 'Medium' %}
+                result-medium
+            {% else %}
+                result-high
+            {% endif %}
+        ">
+
+            <span>
+                {{ student['risk_level']|upper }}
+            </span>
+
+        </div>
+
+
+        <h2>
+            Risk Score:
+            {{ student['risk_score'] }} / 6
+        </h2>
+
+    </div>
+
+
+    <!-- Student Information -->
+
+    <div class="result-section">
+
+        <div class="section-title">
+
+            <h2>
+                🎓 Student Information
+            </h2>
+
+        </div>
+
+
+        <div class="student-details">
+
+            <div class="detail-item">
+
+                <span>
+                    Student ID
+                </span>
+
+                <strong>
+                    {{ student['student_id'] }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span>
+                    Student Name
+                </span>
+
+                <strong>
+                    {{ student['student_name'] }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span>
+                    Class / Grade
+                </span>
+
+                <strong>
+                    {{ student['class_name'] }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Key Indicators -->
+
+    <div class="result-section">
+
+        <div class="section-title">
+
+            <h2>
+                📊 Key Indicators
+            </h2>
+
+        </div>
+
+
+        <div class="indicator-grid">
+
+            <div class="indicator">
+
+                <span>
+                    Attendance
+                </span>
+
+                <strong>
+                    {{ student['attendance'] }}%
+                </strong>
+
+            </div>
+
+
+            <div class="indicator">
+
+                <span>
+                    Internal Marks
+                </span>
+
+                <strong>
+                    {{ student['internal_marks'] }}%
+                </strong>
+
+            </div>
+
+
+            <div class="indicator">
+
+                <span>
+                    Assignment
+                </span>
+
+                {% if student['assignment_status'] == 'On Time' %}
+
+                <strong class="good-text">
+                    On Time
+                </strong>
+
+                {% else %}
+
+                <strong class="weak-text">
+                    Low Submission
+                </strong>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="indicator">
+
+                <span>
+                    Previous Marks
+                </span>
+
+                <strong>
+                    {{ student['previous_marks'] }}%
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Main Areas -->
+
+    {% if student['risk_level'] != 'Low' %}
+
+    <div class="main-areas">
+
+        <h2>
+            ⚠ Main Areas
+        </h2>
+
+
+        {% if student['attendance'] < 75 %}
+
+        <div class="area-item">
+            Low attendance needs attention.
+        </div>
+
+        {% endif %}
+
+
+        {% if student['internal_marks'] < 50 %}
+
+        <div class="area-item">
+            Internal marks are low.
+        </div>
+
+        {% endif %}
+
+
+        {% if student['assignment_status'] != 'On Time' %}
+
+        <div class="area-item">
+            Assignment submission needs improvement.
+        </div>
+
+        {% endif %}
+
+
+        {% if student['previous_marks'] < 50 %}
+
+        <div class="area-item">
+            Previous academic performance needs attention.
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- Subject Performance -->
+
+    <div class="result-section">
+
+        <div class="section-title">
+
+            <h2>
+                📚 Subject Performance
+            </h2>
+
+        </div>
+
+
+        <div class="subject-table-container">
+
+            <table class="subject-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Subject
+                        </th>
+
+                        <th>
+                            Marks
+                        </th>
+
+                        <th>
+                            Performance
+                        </th>
+
+                        <th>
+                            What the Student Should Do
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in subject_analysis %}
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                {{ item['subject'] }}
+                            </strong>
+                        </td>
+
+
+                        <td>
+                            {{ item['marks'] }}%
+                        </td>
+
+
+                        <td>
+
+                            {% if item['level'] == 'Weak' %}
+
+                            <span class="subject-badge subject-weak">
+                                Weak
+                            </span>
+
+                            {% elif item['level'] == 'Needs Improvement' %}
+
+                            <span class="subject-badge subject-improvement">
+                                Needs Improvement
+                            </span>
+
+                            {% else %}
+
+                            <span class="subject-badge subject-good">
+                                Good
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+                            {{ item['advice'] }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- Weak Subjects -->
+
+    {% if weak_subjects %}
+
+    <div class="weak-subject-section">
+
+        <h2>
+            ⚠ Subjects That Need Attention
+        </h2>
+
+        <p>
+            The following subjects have marks below 50%.
+        </p>
+
+
+        <div class="weak-subject-list">
+
+            {% for item in weak_subjects %}
+
+            <div class="weak-subject">
+
+                <div>
+
+                    <h3>
+                        {{ item['subject'] }}
+                    </h3>
+
+                    <span>
+                        {{ item['marks'] }}%
+                    </span>
+
+                </div>
+
+
+                <p>
+                    {{ item['advice'] }}
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- Improvement Subjects -->
+
+    {% if improvement_subjects %}
+
+    <div class="improvement-section">
+
+        <h2>
+            📖 Subjects That Need Improvement
+        </h2>
+
+        <p>
+            These subjects are between 50% and 69%.
+        </p>
+
+
+        <div class="improvement-list">
+
+            {% for item in improvement_subjects %}
+
+            <div class="improvement-item">
+
+                <strong>
+                    {{ item['subject'] }}
+                </strong>
+
+                <span>
+                    {{ item['marks'] }}%
+                </span>
+
+                <p>
+                    {{ item['advice'] }}
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- Analysis Report -->
+
+    <div class="analysis-report">
+
+        <div class="section-title">
+
+            <h2>
+                📋 Student Analysis Report
+            </h2>
+
+        </div>
+
+
+        <div class="report-content">
+
+            <p>
+                {{ analysis_report }}
+            </p>
+
+
+            {% if weak_subjects %}
+
+            <h3>
+                Recommended Focus
+            </h3>
+
+            <ul>
+
+                {% for item in weak_subjects %}
+
+                <li>
+                    Focus on {{ item['subject'] }}:
+                    {{ item['advice'] }}
+                </li>
+
+                {% endfor %}
+
+            </ul>
+
+            {% else %}
+
+            <p class="positive-report">
+                No subject is currently below 50%.
+                Continue regular revision and practice.
+            </p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- Back Button -->
+
+    <div class="result-actions">
+
+        <a
+            href="{{ url_for('students') }}"
+            class="back-btn"
+        >
+            ← Back to Students
+        </a>
+
+        <a
+            href="{{ url_for('add_student') }}"
+            class="add-btn"
+        >
+            + Add Another Student
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

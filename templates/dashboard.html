@@ -1,0 +1,1235 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-container">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StudentCare - Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+ 
+
+<style>
+
+        /* =========================================
+           GENERAL PAGE
+           ========================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f8ff;
+            color: #26336b;
+        }
+
+        /* =========================================
+           TOP HEADER
+           ========================================= */
+
+        .top-header {
+            height: 58px;
+            background: linear-gradient(
+                90deg,
+                #6860df,
+                #75a9f2
+            );
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .brand-icon {
+            font-size: 27px;
+        }
+
+        .admin-area {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 14px;
+        }
+
+        .admin-circle {
+            width: 27px;
+            height: 27px;
+            border-radius: 50%;
+            background: white;
+            color: #6b65df;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* =========================================
+           MAIN LAYOUT
+           ========================================= */
+
+        .main-layout {
+            display: flex;
+            min-height: calc(100vh - 58px);
+        }
+
+        /* =========================================
+           SIDEBAR
+           ========================================= */
+
+        .sidebar {
+            width: 205px;
+            background: linear-gradient(
+                180deg,
+                #202e5a,
+                #182445
+            );
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-link {
+            text-decoration: none;
+            color: #eef1ff;
+            padding: 12px 14px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+        }
+
+        .sidebar-link:hover {
+            background: rgba(255,255,255,0.10);
+        }
+
+        .sidebar-link.active {
+            background: linear-gradient(
+                90deg,
+                #3b82e9,
+                #3c78d9
+            );
+            box-shadow:
+                0 4px 10px rgba(30,90,200,0.25);
+        }
+
+        .sidebar-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        /* =========================================
+           DASHBOARD CONTENT
+           ========================================= */
+
+        .dashboard-content {
+            flex: 1;
+            padding: 27px 30px 45px;
+            overflow-x: hidden;
+        }
+
+        .dashboard-heading h1 {
+            margin: 0;
+            color: #18286f;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .dashboard-heading p {
+            margin-top: 8px;
+            margin-bottom: 25px;
+            color: #7480a4;
+            font-size: 14px;
+        }
+
+        /* =========================================
+           SUMMARY CARDS
+           ========================================= */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .summary-card {
+            min-height: 116px;
+            background: white;
+            border-radius: 9px;
+            padding: 18px;
+            border: 1px solid #dfe7fa;
+            box-shadow:
+                0 4px 12px rgba(50,70,130,0.06);
+            position: relative;
+        }
+
+        .summary-card.total {
+            border-color: #b8dfff;
+        }
+
+        .summary-card.low {
+            border-color: #aee8d4;
+        }
+
+        .summary-card.medium {
+            border-color: #f8d98a;
+        }
+
+        .summary-card.high {
+            border-color: #ffc1cf;
+        }
+
+        .summary-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        .total .summary-icon {
+            background: #d9edff;
+            color: #1681d5;
+        }
+
+        .low .summary-icon {
+            background: #d7f4e7;
+            color: #21996b;
+        }
+
+        .medium .summary-icon {
+            background: #fff0c9;
+            color: #e29b00;
+        }
+
+        .high .summary-icon {
+            background: #ffdce5;
+            color: #e74668;
+        }
+
+        .summary-card h3 {
+            position: absolute;
+            top: 23px;
+            left: 75px;
+            margin: 0;
+            font-size: 14px;
+            color: #26366f;
+        }
+
+        .summary-number {
+            position: absolute;
+            left: 75px;
+            top: 53px;
+            font-size: 28px;
+            font-weight: 700;
+            color: #2474df;
+        }
+
+        .low .summary-number {
+            color: #21996b;
+        }
+
+        .medium .summary-number {
+            color: #e29b00;
+        }
+
+        .high .summary-number {
+            color: #e74668;
+        }
+
+        /* =========================================
+           SECOND STATISTICS
+           ========================================= */
+
+        .secondary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 18px;
+        }
+
+        .secondary-card {
+            background: white;
+            border-radius: 9px;
+            padding: 19px;
+            border: 1px solid #e1e6f5;
+            min-height: 105px;
+            box-shadow:
+                0 4px 12px rgba(50,70,130,0.05);
+        }
+
+        .secondary-card h3 {
+            margin: 0 0 9px;
+            color: #26366f;
+            font-size: 14px;
+        }
+
+        .secondary-number {
+            font-size: 27px;
+            font-weight: 700;
+            color: #5961d7;
+        }
+
+        .secondary-line {
+            height: 7px;
+            border-radius: 10px;
+            background: #e6eaf7;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .secondary-line span {
+            display: block;
+            height: 100%;
+            border-radius: 10px;
+            background: linear-gradient(
+                90deg,
+                #6571e8,
+                #7060d9
+            );
+        }
+
+        .submission-text {
+            margin-top: 5px;
+            font-size: 11px;
+            color: #9aa2ba;
+        }
+
+        /* =========================================
+           STUDENT ANALYSIS TITLE
+           ========================================= */
+
+        .section-heading {
+            margin-top: 27px;
+            margin-bottom: 15px;
+        }
+
+        .section-heading h2 {
+            margin: 0;
+            color: #18286f;
+            font-size: 23px;
+        }
+
+        .section-heading p {
+            margin: 4px 0 0;
+            color: #7783a6;
+            font-size: 13px;
+        }
+
+        /* =========================================
+           CHART GRID
+           ========================================= */
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 9px;
+            border: 1px solid #dfe6f6;
+            padding: 17px;
+            box-shadow:
+                0 4px 13px rgba(50,70,130,0.06);
+        }
+
+        .chart-card h3 {
+            margin: 0;
+            color: #202e72;
+            font-size: 16px;
+        }
+
+        .chart-card p {
+            margin: 5px 0 12px;
+            color: #8490b0;
+            font-size: 11px;
+        }
+
+        .chart-wrapper {
+            height: 245px;
+            position: relative;
+        }
+
+        /* =========================================
+           RISK PIE CHART
+           ========================================= */
+
+        .risk-card {
+            grid-column: 1 / -1;
+        }
+
+        .risk-wrapper {
+            height: 250px;
+            max-width: 620px;
+            margin: auto;
+        }
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+
+        @media (max-width: 1000px) {
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .risk-card {
+                grid-column: auto;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                width: 70px;
+                padding: 20px 8px;
+            }
+
+            .sidebar-link span:last-child {
+                display: none;
+            }
+
+            .dashboard-content {
+                padding: 20px 15px;
+            }
+
+            .summary-grid,
+            .secondary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .top-header {
+                padding: 0 12px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    
+
+        <!-- =====================================
+             DASHBOARD CONTENT
+             ===================================== -->
+
+        <main class="dashboard-content">
+
+
+            <!-- DASHBOARD HEADING -->
+
+            <div class="dashboard-heading">
+
+                <h1>
+                    Dashboard
+                </h1>
+
+                <p>
+                    Overview of student academic indicators and early warning levels.
+                </p>
+
+            </div>
+
+
+            <!-- =================================
+                 SUMMARY CARDS
+                 ================================= -->
+
+            <div class="summary-grid">
+
+
+                <!-- TOTAL STUDENTS -->
+
+                <div class="summary-card total">
+
+                    <div class="summary-icon">
+                        👥
+                    </div>
+
+                    <h3>
+                        Total Students
+                    </h3>
+
+                    <div class="summary-number">
+                        {{ total_students }}
+                    </div>
+
+                </div>
+
+
+                <!-- LOW RISK -->
+
+                <div class="summary-card low">
+
+                    <div class="summary-icon">
+                        ✓
+                    </div>
+
+                    <h3>
+                        Low Risk
+                    </h3>
+
+                    <div class="summary-number">
+                        {{ low_risk }}
+                    </div>
+
+                </div>
+
+
+                <!-- MEDIUM RISK -->
+
+                <div class="summary-card medium">
+
+                    <div class="summary-icon">
+                        ⚠
+                    </div>
+
+                    <h3>
+                        Medium Risk
+                    </h3>
+
+                    <div class="summary-number">
+                        {{ medium_risk }}
+                    </div>
+
+                </div>
+
+
+                <!-- HIGH RISK -->
+
+                <div class="summary-card high">
+
+                    <div class="summary-icon">
+                        !
+                    </div>
+
+                    <h3>
+                        High Risk
+                    </h3>
+
+                    <div class="summary-number">
+                        {{ high_risk }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 SECONDARY STATISTICS
+                 ================================= -->
+
+            <div class="secondary-grid">
+
+
+                <!-- AVERAGE ATTENDANCE -->
+
+                <div class="secondary-card">
+
+                    <h3>
+                        Average Attendance
+                    </h3>
+
+                    <div class="secondary-number">
+                        {{ average_attendance }}%
+                    </div>
+
+                    <div class="secondary-line">
+
+                        <span
+                            style="width: {{ average_attendance }}%;"
+                        ></span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- AVERAGE INTERNAL MARKS -->
+
+                <div class="secondary-card">
+
+                    <h3>
+                        Average Internal Marks
+                    </h3>
+
+                    <div class="secondary-number">
+                        {{ average_internal_marks }}%
+                    </div>
+
+                    <div class="secondary-line">
+
+                        <span
+                            style="width: {{ average_internal_marks }}%;"
+                        ></span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LOW SUBMISSION -->
+
+                <div class="secondary-card">
+
+                    <h3>
+                        Low Submission
+                    </h3>
+
+                    <div class="secondary-number">
+                        {{ low_submission }}
+                    </div>
+
+                    <div class="submission-text">
+                        Students with late or missing assignments.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 STUDENT ANALYSIS
+                 ================================= -->
+
+            <div class="section-heading">
+
+                <h2>
+                    📊 Student Analysis
+                </h2>
+
+                <p>
+                    Visual analysis of all students' academic performance and risk levels.
+                </p>
+
+            </div>
+
+
+            <div class="chart-grid">
+
+
+                <!-- OVERALL STUDENT PERFORMANCE -->
+
+                <div class="chart-card">
+
+                    <h3>
+                        Overall Student Performance
+                    </h3>
+
+                    <p>
+                        Attendance, Internal Marks and Previous Marks
+                    </p>
+
+                    <div class="chart-wrapper">
+
+                        <canvas
+                            id="studentPerformanceChart"
+                        ></canvas>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SUBJECT PERFORMANCE -->
+
+                <div class="chart-card">
+
+                    <h3>
+                        Subject Performance
+                    </h3>
+
+                    <p>
+                        Marks of all students across subjects
+                    </p>
+
+                    <div class="chart-wrapper">
+
+                        <canvas
+                            id="subjectPerformanceChart"
+                        ></canvas>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RISK DISTRIBUTION -->
+
+                <div class="chart-card risk-card">
+
+                    <h3>
+                        Risk Level Distribution
+                    </h3>
+
+                    <p>
+                        Number of students in each risk level
+                    </p>
+
+                    <div class="risk-wrapper">
+
+                        <canvas
+                            id="riskChart"
+                        ></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </main>
+
+    </div>
+    <!-- =========================================
+         JAVASCRIPT
+         ========================================= -->
+
+    <script>
+
+
+        /* =====================================
+           STUDENT NAMES
+           ===================================== */
+
+        const studentNames = [
+
+            {% for student in students %}
+
+                "{{ student['student_name']|replace('"', '\\"') }}"
+
+                {% if not loop.last %},{% endif %}
+
+            {% endfor %}
+
+        ];
+
+
+        /* =====================================
+           ATTENDANCE DATA
+           ===================================== */
+
+        const attendanceData = [
+
+            {% for student in students %}
+
+                {{ student['attendance'] }}
+
+                {% if not loop.last %},{% endif %}
+
+            {% endfor %}
+
+        ];
+
+
+        /* =====================================
+           INTERNAL MARKS DATA
+           ===================================== */
+
+        const internalData = [
+
+            {% for student in students %}
+
+                {{ student['internal_marks'] }}
+
+                {% if not loop.last %},{% endif %}
+
+            {% endfor %}
+
+        ];
+
+
+        /* =====================================
+           PREVIOUS MARKS DATA
+           ===================================== */
+
+        const previousData = [
+
+            {% for student in students %}
+
+                {{ student['previous_marks'] }}
+
+                {% if not loop.last %},{% endif %}
+
+            {% endfor %}
+
+        ];
+
+
+        /* =====================================
+           STUDENT PERFORMANCE BAR CHART
+           ===================================== */
+
+        new Chart(
+
+            document.getElementById(
+                "studentPerformanceChart"
+            ),
+
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels: studentNames,
+
+                    datasets: [
+
+                        {
+
+                            label: "Attendance",
+
+                            data: attendanceData,
+
+                            backgroundColor: "#3b91e5",
+
+                            borderRadius: 4
+
+                        },
+
+
+                        {
+
+                            label: "Internal Marks",
+
+                            data: internalData,
+
+                            backgroundColor: "#7959d9",
+
+                            borderRadius: 4
+
+                        },
+
+
+                        {
+
+                            label: "Previous Marks",
+
+                            data: previousData,
+
+                            backgroundColor: "#f05f91",
+
+                            borderRadius: 4
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+
+                        legend: {
+
+                            position: "bottom",
+
+                            labels: {
+
+                                boxWidth: 12,
+
+                                font: {
+
+                                    size: 10
+
+                                }
+
+                            }
+
+                        }
+
+                    },
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            max: 100,
+
+                            ticks: {
+
+                                font: {
+
+                                    size: 9
+
+                                }
+
+                            }
+
+                        },
+
+                        x: {
+
+                            ticks: {
+
+                                font: {
+
+                                    size: 9
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+
+        /* =====================================
+           SUBJECT DATA
+           ===================================== */
+
+        const englishData = [
+
+            {% for student in students %}
+
+                {{ student['english_marks'] }}
+
+                {% if not loop.last %},{% endif %}
+
+            {% endfor %}
+
+        ];
+
+
+        const mathsData = [
+
+            {% for student in students %}
+
+                {{ student['maths_marks'] }}
+
+                {% if not loop.last %},{% endif %}
+
+            {% endfor %}
+
+        ];
+
+
+        const hindiData = [
+
+            {% for student in students %}
+
+                {{ student['hindi_marks'] }}
+
+                {% if not loop.last %},{% endif %}
+
+            {% endfor %}
+
+        ];
+
+
+        const marathiData = [
+
+            {% for student in students %}
+
+                {{ student['marathi_marks'] }}
+
+                {% if not loop.last %},{% endif %}
+
+            {% endfor %}
+
+        ];
+
+
+        const scienceData = [
+
+            {% for student in students %}
+
+                {{ student['science_marks'] }}
+
+                {% if not loop.last %},{% endif %}
+
+            {% endfor %}
+
+        ];
+
+
+        const historyData = [
+
+            {% for student in students %}
+
+                {{ student['history_marks'] }}
+
+                {% if not loop.last %},{% endif %}
+
+            {% endfor %}
+
+        ];
+
+
+        const geographyData = [
+
+            {% for student in students %}
+
+                {{ student['geography_marks'] }}
+
+                {% if not loop.last %},{% endif %}
+
+            {% endfor %}
+
+        ];
+
+
+        /* =====================================
+           SUBJECT PERFORMANCE BAR CHART
+           ===================================== */
+
+        new Chart(
+
+            document.getElementById(
+                "subjectPerformanceChart"
+            ),
+
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels: [
+
+                        "English",
+
+                        "Maths",
+
+                        "Hindi",
+
+                        "Marathi",
+
+                        "Science",
+
+                        "History",
+
+                        "Geography"
+
+                    ],
+
+                    datasets: [
+
+                        {
+
+                            label: "Students",
+
+                            data: [
+
+                                {{ english_average }},
+
+                                {{ maths_average }},
+
+                                {{ hindi_average }},
+
+                                {{ marathi_average }},
+
+                                {{ science_average }},
+
+                                {{ history_average }},
+
+                                {{ geography_average }}
+
+                            ],
+
+                            backgroundColor: [
+
+                                "#3294df",
+
+                                "#7657d8",
+
+                                "#f05b91",
+
+                                "#42b883",
+
+                                "#f2bd3e",
+
+                                "#e477a0",
+
+                                "#38aaa3"
+
+                            ],
+
+                            borderRadius: 4
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+
+                        legend: {
+
+                            display: false
+
+                        }
+
+                    },
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            max: 100
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+
+        /* =====================================
+           RISK PIE CHART
+           ===================================== */
+
+        new Chart(
+
+            document.getElementById(
+                "riskChart"
+            ),
+
+            {
+
+                type: "pie",
+
+                data: {
+
+                    labels: [
+
+                        "Low Risk",
+
+                        "Medium Risk",
+
+                        "High Risk"
+
+                    ],
+
+                    datasets: [
+
+                        {
+
+                            data: [
+
+                                {{ low_risk }},
+
+                                {{ medium_risk }},
+
+                                {{ high_risk }}
+
+                            ],
+
+                            backgroundColor: [
+
+                                "#48bd94",
+
+                                "#f5b23d",
+
+                                "#ef4770"
+
+                            ],
+
+                            borderColor: "#ffffff",
+
+                            borderWidth: 3
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+
+                        legend: {
+
+                            position: "right"
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+    </script>
+
+
+</body>
+
+{% endblock %}

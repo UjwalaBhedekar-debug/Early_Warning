@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}
+StudentCare | Performance
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-container">
+
+    <h1>
+        Performance Analysis
+    </h1>
+
+    <p class="page-description">
+        Overview of academic performance across
+        students and subjects.
+    </p>
+
+
+    <div class="stats-grid">
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon blue">
+                👥
+            </div>
+
+            <h4>
+                Students Analysed
+            </h4>
+
+            <div class="stat-number">
+                {{ total }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon green">
+                📅
+            </div>
+
+            <h4>
+                Average Attendance
+            </h4>
+
+            <div class="stat-number">
+                {{ average_attendance }}%
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon blue">
+                📝
+            </div>
+
+            <h4>
+                Average Internal Marks
+            </h4>
+
+            <div class="stat-number">
+                {{ average_internal }}%
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon purple">
+                📈
+            </div>
+
+            <h4>
+                Previous Performance
+            </h4>
+
+            <div class="stat-number">
+                {{ average_previous }}%
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="section-heading">
+
+        <h2>
+            Subject Performance
+        </h2>
+
+    </div>
+
+
+    <div class="subject-grid">
+
+        {% for subject in subject_averages %}
+
+        <div class="subject-card">
+
+            <div class="subject-top">
+
+                <div class="subject-name">
+                    {{ subject["name"] }}
+                </div>
+
+                <div class="subject-mark">
+                    {{ subject["average"] }}%
+                </div>
+
+            </div>
+
+
+            <div class="progress-container">
+
+                <div class="progress-bar"
+                     style="width:{{ subject['average'] }}%;">
+                </div>
+
+            </div>
+
+
+            <div class="subject-advice">
+
+                Average performance across
+                recorded students.
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

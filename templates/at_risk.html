@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}
+StudentCare | At-Risk Students
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-container">
+
+    <h1>
+        At-Risk Students
+    </h1>
+
+    <p class="page-description">
+        Students currently classified as Medium or High
+        risk based on the selected academic indicators.
+    </p>
+
+
+    {% if students %}
+
+    <div class="student-grid">
+
+        {% for student in students %}
+
+        <div class="student-card">
+
+
+            <div class="student-avatar"
+                 style="background:#fee2e2; color:#ef4444;">
+
+                ⚠
+
+            </div>
+
+
+            <h3>
+                {{ student["student_name"] }}
+            </h3>
+
+
+            <div class="student-id">
+
+                ID:
+                {{ student["student_id"] }}
+
+            </div>
+
+
+            {% if student["risk_level"] == "High" %}
+
+            <span class="badge badge-high">
+                HIGH RISK
+            </span>
+
+            {% else %}
+
+            <span class="badge badge-medium">
+                MEDIUM RISK
+            </span>
+
+            {% endif %}
+
+
+            <div class="student-detail">
+
+                <span>
+                    Risk Score
+                </span>
+
+                <strong>
+                    {{ student["risk_score"] }} / 6
+                </strong>
+
+            </div>
+
+
+            <div class="student-detail">
+
+                <span>
+                    Attendance
+                </span>
+
+                <strong>
+                    {{ student["attendance"] }}%
+                </strong>
+
+            </div>
+
+
+            <div class="student-detail">
+
+                <span>
+                    Internal Marks
+                </span>
+
+                <strong>
+                    {{ student["internal_marks"] }}%
+                </strong>
+
+            </div>
+
+
+            <div class="student-detail">
+
+                <span>
+                    Assignment
+                </span>
+
+                <strong>
+
+                    {% if student["assignment_status"] == "On Time" %}
+
+                        On Time
+
+                    {% else %}
+
+                        Low Submission
+
+                    {% endif %}
+
+                </strong>
+
+            </div>
+
+
+            <div class="student-actions">
+
+                <a href="{{ url_for(
+                    'result',
+                    student_id=student['id']
+                ) }}"
+                   class="secondary-btn">
+
+                    View Analysis →
+
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    {% else %}
+
+    <div class="empty-state">
+
+        <div class="empty-icon">
+            ✓
+        </div>
+
+        <h3>
+            No At-Risk Students
+        </h3>
+
+        <p>
+            No students are currently classified
+            as Medium or High risk.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

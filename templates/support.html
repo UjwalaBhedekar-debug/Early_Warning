@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+
+{% block title %}
+StudentCare | Student Support
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-container">
+
+    <h1>
+        Personalized Student Support
+    </h1>
+
+    <p class="page-description">
+        Suggested areas for reviewing support needs
+        based on the student's indicators.
+    </p>
+
+
+    <div class="result-grid">
+
+
+        <div class="student-info">
+
+            <h3>
+                👨‍🎓 Student Information
+            </h3>
+
+
+            <div class="info-item">
+
+                <span>
+                    Student
+                </span>
+
+                <strong>
+                    {{ students["students_name"] }}
+                </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <span>
+                    Class
+                </span>
+
+                <strong>
+                    Grade {{ student["class_name"] }}
+                </strong>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <span>
+                    Risk Level
+                </span>
+
+                {% if student["risk_level"] == "High" %}
+
+                <span class="badge badge-high">
+                    High
+                </span>
+
+                {% else %}
+
+                <span class="badge badge-medium">
+                    Medium
+                </span>
+
+                {% endif %}
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="indicators">
+
+            <h3>
+                ⚠ Indicators
+            </h3>
+
+
+            <div class="indicator-item">
+
+                <span class="indicator-name">
+                    Attendance
+                </span>
+
+                <strong>
+                    {{ student["attendance"] }}%
+                </strong>
+
+            </div>
+
+
+            <div class="indicator-item">
+
+                <span class="indicator-name">
+                    Internal Marks
+                </span>
+
+                <strong>
+                    {{ student["internal_marks"] }}%
+                </strong>
+
+            </div>
+
+
+            <div class="indicator-item">
+
+                <span class="indicator-name">
+                    Assignment
+                </span>
+
+                <strong>
+                    {% if student["assignment_status"] == "On Time" %}
+                        On Time
+                    {% else %}
+                        Low Submission
+                    {% endif %}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="section-heading">
+
+        <h2>
+            Support Areas
+        </h2>
+
+    </div>
+
+
+    <div class="support-grid">
+
+
+        {% if student["attendance"] < 75 %}
+
+        <div class="support-card">
+
+            <div class="support-icon">
+                📅
+            </div>
+
+            <h3>
+                Attendance Support
+            </h3>
+
+            <p>
+                Review attendance and consider
+                appropriate school follow-up.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+
+        {% if student["internal_marks"] < 50 %}
+
+        <div class="support-card">
+
+            <div class="support-icon">
+                📚
+            </div>
+
+            <h3>
+                Academic Support
+            </h3>
+
+            <p>
+                Review basic concepts and provide
+                additional academic guidance.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+
+        {% if student["assignment_status"] != "On Time" %}
+
+        <div class="support-card">
+
+            <div class="support-icon">
+                📝
+            </div>
+
+            <h3>
+                Assignment Support
+            </h3>
+
+            <p>
+                Review assignment submission patterns
+                and provide suitable guidance.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+
+        {% for subject in subjects %}
+
+            {% if subject["level"] != "Good" %}
+
+            <div class="support-card">
+
+                <div class="support-icon">
+                    📖
+                </div>
+
+                <h3>
+                    {{ subject["subject"] }}
+                </h3>
+
+                <p>
+                    {{ subject["advice"] }}
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        {% endfor %}
+
+
+    </div>
+
+</div>
+
+{% endblock %}

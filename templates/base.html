@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>StudentCare</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+<nav class="navbar">
+
+    <a
+        href="{{ url_for('index') }}"
+        class="logo"
+    >
+        🎓 StudentCare
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="{{ url_for('index') }}">
+            Index
+        </a>
+
+        <a href="{{ url_for('add_student') }}">
+            Add Student
+        </a>
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('students') }}">
+            Students
+        </a>
+
+
+    </div>
+
+
+    <a
+        href="{{ url_for('add_student') }}"
+        class="login-btn"
+    >
+        Add Student
+    </a>
+
+</nav>
+
+
+<main>
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+
+
+<script
+    src="{{ url_for('static', filename='script.js') }}"
+></script>
+
+</body>
+
+</html>

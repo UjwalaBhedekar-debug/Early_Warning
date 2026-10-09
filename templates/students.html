@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-container">
+
+    <div class="page-header">
+
+        <div>
+            <h1>Students</h1>
+
+            <p>
+                View and manage all student information.
+            </p>
+        </div>
+
+        <a href="{{ url_for('add_student') }}" class="add-student-btn">
+            + Add Student
+        </a>
+
+    </div>
+
+
+    {% if students %}
+
+    <div class="students-table-container">
+
+        <table class="students-table">
+
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Class / Grade</th>
+                    <th>Attendance</th>
+                    <th>Internal Marks</th>
+                    <th>Previous Marks</th>
+                    <th>Assignment</th>
+                    <th>Risk Score</th>
+                    <th>Risk Level</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+
+            <tbody>
+
+                {% for student in students %}
+
+                <tr>
+
+                    <td>
+                        <span class="student-id">
+                            {{ student['student_id'] }}
+                        </span>
+                    </td>
+
+
+                    <td>
+                        <strong>
+                            {{ student['student_name'] }}
+                        </strong>
+                    </td>
+
+
+                    <td>
+                        {{ student['class_name'] }}
+                    </td>
+
+
+                    <td>
+                        {{ student['attendance'] }}%
+                    </td>
+
+
+                    <td>
+                        {{ student['internal_marks'] }}%
+                    </td>
+
+
+                    <td>
+                        {{ student['previous_marks'] }}%
+                    </td>
+
+
+                    <td>
+
+                        {% if student['assignment_status'] == 'On Time' %}
+
+                        <span class="assignment-good">
+                            On Time
+                        </span>
+
+                        {% else %}
+
+                        <span class="assignment-low">
+                            Low Submission
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+                        <strong>
+                            {{ student['risk_score'] }} / 6
+                        </strong>
+                    </td>
+
+
+                    <td>
+
+                        {% if student['risk_level'] == 'Low' %}
+
+                        <span class="risk-badge risk-low">
+                            Low Risk
+                        </span>
+
+                        {% elif student['risk_level'] == 'Medium' %}
+
+                        <span class="risk-badge risk-medium">
+                            Medium Risk
+                        </span>
+
+                        {% else %}
+
+                        <span class="risk-badge risk-high">
+                            High Risk
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="student-actions">
+
+                            <a
+                                href="{{ url_for('result', student_id=student['id']) }}"
+                                class="view-btn"
+                            >
+                                View
+                            </a>
+
+
+                            <a
+                                href="{{ url_for('edit_student', student_id=student['id']) }}"
+                                class="edit-btn"
+                            >
+                                Edit
+                            </a>
+
+
+                            <form
+                                action="{{ url_for('delete_student', student_id=student['id']) }}"
+                                method="POST"
+                                class="delete-form"
+                                onsubmit="return confirm('Are you sure you want to delete {{ student['student_name'] }}?');"
+                            >
+
+                                <button
+                                    type="submit"
+                                    class="delete-btn"
+                                >
+                                    Delete
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <p class="students-count">
+        Showing {{ students|length }} student(s)
+    </p>
+
+
+    {% else %}
+
+    <div class="empty-state">
+
+        <div class="empty-icon">
+            🎓
+        </div>
+
+        <h2>No Student Data Yet</h2>
+
+        <p>
+            Add a student to start using the Early Warning System.
+        </p>
+
+        <a
+            href="{{ url_for('add_student') }}"
+            class="add-student-btn"
+        >
+            + Add Student
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

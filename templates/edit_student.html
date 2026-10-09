@@ -1,0 +1,405 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-container">
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>
+                Edit Student Information
+            </h1>
+
+            <p>
+                Update the student's information and save the changes.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{{ url_for('students') }}"
+            class="secondary-btn"
+        >
+            ← Back to Students
+        </a>
+
+    </div>
+
+
+    <!-- EDIT FORM -->
+
+    <div class="edit-student-card">
+
+        <form
+            method="POST"
+            action="{{ url_for('edit_student', student_id=student['id']) }}"
+        >
+
+
+            <!-- STUDENT INFORMATION -->
+
+            <div class="form-section">
+
+                <h2>
+                    Student Information
+                </h2>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Student ID
+                        </label>
+
+                        <input
+                            type="text"
+                            name="student_id"
+                            value="{{ student['student_id'] }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Student Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="student_name"
+                            value="{{ student['student_name'] }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Class / Grade
+                        </label>
+
+                        <input
+                            type="text"
+                            name="class_name"
+                            value="{{ student['class_name'] }}"
+                            required
+                        >
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- ACADEMIC INFORMATION -->
+
+            <div class="form-section">
+
+                <h2>
+                    Academic Information
+                </h2>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Attendance (%)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="attendance"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            value="{{ student['attendance'] }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Internal Marks (%)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="internal_marks"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            value="{{ student['internal_marks'] }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Assignment Submission
+                        </label>
+
+                        <select
+                            name="assignment_status"
+                            required
+                        >
+
+                            <option
+                                value="On Time"
+                                {% if student['assignment_status'] == 'On Time' %}
+                                selected
+                                {% endif %}
+                            >
+                                On Time
+                            </option>
+
+
+                            <option
+                                value="Late"
+                                {% if student['assignment_status'] == 'Late' %}
+                                selected
+                                {% endif %}
+                            >
+                                Late
+                            </option>
+
+
+                            <option
+                                value="Not Submitted"
+                                {% if student['assignment_status'] == 'Not Submitted' %}
+                                selected
+                                {% endif %}
+                            >
+                                Not Submitted
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Previous Examination Marks (%)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="previous_marks"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            value="{{ student['previous_marks'] }}"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SUBJECT PERFORMANCE -->
+
+            <div class="form-section">
+
+                <h2>
+                    Subject Performance
+                </h2>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label>
+                            English (%)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="english_marks"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            value="{{ student['english_marks'] }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Maths (%)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="maths_marks"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            value="{{ student['maths_marks'] }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Hindi (%)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="hindi_marks"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            value="{{ student['hindi_marks'] }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Marathi (%)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="marathi_marks"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            value="{{ student['marathi_marks'] }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Science (%)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="science_marks"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            value="{{ student['science_marks'] }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            History (%)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="history_marks"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            value="{{ student['history_marks'] }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Geography (%)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="geography_marks"
+                            min="0"
+                            max="100"
+                            step="0.01"
+                            value="{{ student['geography_marks'] }}"
+                            required
+                        >
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="edit-form-actions">
+
+                <a
+                    href="{{ url_for('students') }}"
+                    class="cancel-btn"
+                >
+                    Cancel
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="save-btn"
+                >
+                    ✓ Save Changes
+                </button>
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

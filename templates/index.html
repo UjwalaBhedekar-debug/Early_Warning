@@ -1,0 +1,382 @@
+{% extends "base.html" %}
+
+{% block title %}
+StudentCare | Home
+{% endblock %}
+
+
+{% block content %}
+
+
+<!-- =====================================================
+     HERO
+     ===================================================== -->
+
+<section class="hero-section">
+
+    <div class="hero-content">
+
+        <div class="hero-label">
+            WELCOME TO STUDENTCARE
+        </div>
+
+
+        <h1>
+
+            Early Warning System
+
+            <br>
+
+            <span>
+                for At-Risk Students
+            </span>
+
+        </h1>
+
+
+        <p>
+
+            Identify students who may need academic
+            support at an early stage and help them
+            achieve better academic outcomes.
+
+        </p>
+
+
+        <a href="{{ url_for('add_student') }}"
+           class="primary-btn">
+
+            Analyse Student
+
+            <span>→</span>
+
+        </a>
+
+    </div>
+
+
+    <div class="hero-visual">
+
+        <div class="student-illustration">
+
+            👨‍🎓
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     MAIN HOME AREA
+     ===================================================== -->
+
+<div class="index-grid">
+
+
+    <div>
+
+
+        <!-- =================================================
+             STATISTICS
+             ================================================= -->
+
+        <div class="stats-grid">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon blue">
+                    👥
+                </div>
+
+                <h4>
+                    Total Students
+                </h4>
+
+                <div class="stat-number">
+                    {{ total }}
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon green">
+                    ✓
+                </div>
+
+                <h4>
+                    Low Risk
+                </h4>
+
+                <div class="stat-number">
+                    {{ low }}
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon orange">
+                    ⚠
+                </div>
+
+                <h4>
+                    Medium Risk
+                </h4>
+
+                <div class="stat-number">
+                    {{ medium }}
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon red">
+                    !
+                </div>
+
+                <h4>
+                    High Risk
+                </h4>
+
+                <div class="stat-number">
+                    {{ high }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             KEY FEATURES
+             ================================================= -->
+
+        <div class="section-heading">
+
+            <h2>
+                Key Features
+            </h2>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+
+            <a href="{{ url_for('performance') }}"
+               class="feature-card">
+
+                <div class="feature-icon blue">
+                    📊
+                </div>
+
+                <h3>
+                    Performance Analysis
+                </h3>
+
+                <p>
+                    Track attendance, internal marks
+                    and academic performance.
+                </p>
+
+                <span class="learn-more">
+                    Learn More →
+                </span>
+
+            </a>
+
+
+
+            <a href="{{ url_for('at_risk') }}"
+               class="feature-card">
+
+                <div class="feature-icon red">
+                    ⚠️
+                </div>
+
+                <h3>
+                    Detect At-Risk Students
+                </h3>
+
+                <p>
+                    Identify students who may need
+                    early academic support.
+                </p>
+
+                <span class="learn-more">
+                    Learn More →
+                </span>
+
+            </a>
+
+
+
+            <a href="{{ url_for('support_overview') }}"
+               class="feature-card">
+
+                <div class="feature-icon green">
+                    🤝
+                </div>
+
+                <h3>
+                    Personalized Support
+                </h3>
+
+                <p>
+                    Provide suitable support based
+                    on student performance.
+                </p>
+
+                <span class="learn-more">
+                    Learn More →
+                </span>
+
+            </a>
+
+
+
+            <a href="{{ url_for('improve') }}"
+               class="feature-card">
+
+                <div class="feature-icon purple">
+                    🎓
+                </div>
+
+                <h3>
+                    Improve Academic Success
+                </h3>
+
+                <p>
+                    Monitor important indicators
+                    and improvement areas.
+                </p>
+
+                <span class="learn-more">
+                    Learn More →
+                </span>
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         QUICK ACCESS
+         ================================================= -->
+
+    <div class="quick-card">
+
+        <h2>
+            ⚡ Quick Access
+        </h2>
+
+
+        <a href="{{ url_for('add_student') }}"
+           class="quick-item">
+
+            <div class="quick-icon">
+                +
+            </div>
+
+            <strong>
+                Add New Student
+            </strong>
+
+            <span class="quick-arrow">
+                ›
+            </span>
+
+        </a>
+
+
+
+        <a href="{{ url_for('students') }}"
+           class="quick-item">
+
+            <div class="quick-icon">
+                👥
+            </div>
+
+            <strong>
+                View All Students
+            </strong>
+
+            <span class="quick-arrow">
+                ›
+            </span>
+
+        </a>
+
+
+
+        <a href="{{ url_for('at_risk') }}"
+           class="quick-item">
+
+            <div class="quick-icon">
+                ⚠
+            </div>
+
+            <strong>
+                Risk Analysis
+            </strong>
+
+            <span class="quick-arrow">
+                ›
+            </span>
+
+        </a>
+
+
+
+
+        <a href="{{ url_for('support_overview') }}"
+           class="quick-item">
+
+            <div class="quick-icon">
+                🤝
+            </div>
+
+            <strong>
+                Support Overview
+            </strong>
+
+            <span class="quick-arrow">
+                ›
+            </span>
+
+        </a>
+
+    </div>
+
+</div>
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+<p>
+
+© 2026 Early Warning System | 
+Developed by Ujwala Bhedekar
+
+</p>
+
+</footer>
+{% endblock %}
